@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Nick's QR Code Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qr-code-styling/lib/qr-code-styling.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>Nick's QR Code Generator</h1>
+
+  <label for="input">Url:</label>
+  <input type="text" id="input" placeholder="Enter text">
+  <br>
+  <label for="size">Size:</label>
+  <input type="number" id="size" min="100" max="500" value="200">
+  <div id="qrcode"></div>
+  <br>
+  <button id="downloadBtn">Download QR Code</button>
+
+  <script>
+    const inputElement = document.getElementById('input');
+    const sizeElement = document.getElementById('size');
+    const qrcodeElement = document.getElementById('qrcode');
+    const downloadButton = document.getElementById('downloadBtn');
+
+    const qrCode = new QRCodeStyling({
+      type: "svg",
+      width: sizeElement.value,
+      height: sizeElement.value,
+      data: inputElement.value,
+      image: '',
+      dotsOptions: {
+        color: "#000",
+        type: "dots"
+      },
+      imageOptions: {
+        crossOrigin: 'anonymous',
+        margin: 0
+      },
+      qrOptions: {
+        typeNumber: 0,
+        errorCorrectionLevel: 'L',
+      },
+      cornersSquareOptions: {
+        type: 'dots'
+      }
+    });
+
+    qrCode.append(qrcodeElement);
+
+    inputElement.addEventListener('input', () => {
+      qrCode.update({
+        data: inputElement.value
+      });
+    });
+
+    sizeElement.addEventListener('input', () => {
+      qrCode.update({
+        width: sizeElement.value,
+        height: sizeElement.value
+      });
+    });
+
+    downloadButton.addEventListener('click', () => {
+      const svg = qrcodeElement.querySelector('svg');
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const blob = new Blob([svgData], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'qrcode.svg';
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
