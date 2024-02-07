@@ -8,15 +8,18 @@
     body {
       font-family: 'Poppins', sans-serif;
     }
+    label {
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
   <h1>Nick's QR Code Generator</h1>
 
-  <label for="input">Url:</label>
+  <label for="input">Url</label>
   <input type="text" id="input" placeholder="Enter text">
   <br>
-  <label for="size">Size:</label>
+  <label for="size">Size</label>
   <input type="number" id="size" min="100" max="500" value="200">
   <div id="qrcode"></div>
   <br>
